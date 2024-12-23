@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import BlogCard from '../../components/blog/BlogCard.astro';
+import TagList from '../../components/blog/TagList.astro';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Get unique tags from all posts
+const tags = [...new Set(posts.flatMap(post => post.data.tags))];
+---
+
+<Layout 
+  title="Blog - Your Name"
+  description="Articles about web development, programming, and technology"
+>
+  <div class="space-y-8">
+    <h1 class="text-4xl font-bold text-gray-900">Blog</h1>
+    
+    <TagList tags={tags} />
+
+    <div class="grid gap-8">
+      {sortedPosts.map(post => (
+        <BlogCard
+          title={post.data.title}
+          description={post.data.description}
+          pubDate={post.data.pubDate}
+          url={`/blog/${post.slug}`}
+          tags={post.data.tags}
+          image={post.data.image}
+        />
+      ))}
+    </div>
+  </div>
+</Layout>

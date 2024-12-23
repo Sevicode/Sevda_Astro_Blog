@@ -1,0 +1,93 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import BlogCard from '../components/blog/BlogCard.astro';
+import ProjectCard from '../components/projects/ProjectCard.astro';
+
+// Get latest 8 blog posts
+const posts = await getCollection('blog');
+const latestPosts = posts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 8);
+
+
+// Get latest 3 projects
+const projects = await getCollection('projects');
+const latestProjects = projects
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<Layout title="Your Name - Developer & Writer">
+  <section class="space-y-8 ">
+    <div class="space-y-4 justify-center justify-items-center">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-white">Hi there, Sevda here!👋</h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400">
+        A web developer crafting seamless experiences,
+      </p>
+      <!-- <p>A writer sharing insights and stories about web development,</p>
+      <p>An artist expressing creativity through colors,</p>
+      <p>And a creator shaping ideas into reality.</p> -->
+    </div>
+
+    <div class="flex gap-4 justify-center	">
+      <a
+        href="https://www.linkedin.com/in/sevda-amini-phd-ab770743/"
+        class="inline-flex items-center px-4 py-2 border border-primary text-primary hover:bg-primary hover:text-white rounded-md transition-colors"
+      >
+        Connect on LinkedIn
+      </a>
+      <a
+        href="/projects"
+        class="inline-flex items-center px-4 py-2 border border-gray-200 text-gray-700 dark:text-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors"
+      >
+        View my projects
+      </a>
+    </div>
+  </section>
+
+  <section class="mt-20">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Posts</h2>
+      <a href="/blog" class="text-primary hover:text-primary-dark transition-colors">
+        View all posts →
+      </a>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {latestPosts.map(post => (
+        <BlogCard
+          title={post.data.title}
+          description={post.data.description}
+          pubDate={post.data.pubDate}
+          url={`/blog/${post.slug}`}
+          tags={post.data.tags}
+          image={post.data.image}
+        />
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-20">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Featured Projects</h2>
+      <a href="/projects" class="text-primary hover:text-primary-dark transition-colors">
+        View all projects →
+      </a>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {latestProjects.map(project => (
+        <ProjectCard
+          title={project.data.title}
+          description={project.data.description}
+          image={project.data.image}
+          link={project.data.link}
+          github={project.data.github}
+          tags={project.data.tags}
+          tech={project.data.tech}
+        />
+      ))}
+    </div>
+  </section>
+</Layout>
