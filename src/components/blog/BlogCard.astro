@@ -9,9 +9,10 @@ interface Props {
   url: string;
   tags?: string[];
   image?: string;
+  showTags?: boolean;
 }
 
-const { title, description, pubDate, url, tags = [], image } = Astro.props;
+const { title, description, pubDate, url, tags = [], image, showTags = false } = Astro.props;
 const imagePath = getImagePath(image);
 ---
 
