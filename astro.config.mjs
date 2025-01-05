@@ -6,9 +6,12 @@ import mdx from '@astrojs/mdx';
 
 export default defineConfig({
   site: 'https://yourdomain.com',
+  
   markdown: {
+    integrations: [mdx()],
+    syntaxHighlight: 'shiki',  
     shikiConfig: {
-      theme: 'github-dark',
+      theme: 'dracula',
       wrap: true
     }
   },

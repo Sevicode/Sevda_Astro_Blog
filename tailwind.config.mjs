@@ -11,6 +11,18 @@ export default {
       typography: {
         DEFAULT: {
           css: {
+            'code::before': {
+              content: '""'  // This removes the backticks
+            },
+            'code::after': {
+              content: '""'  // This removes the backticks
+            },
+            code: {
+              backgroundColor: '#f3f3f3',
+              padding: '0.2em 0.4em',
+              borderRadius: '4px',
+              fontWeight: '400',
+            },
             maxWidth: '100ch',
             color: '#334155',
             a: {

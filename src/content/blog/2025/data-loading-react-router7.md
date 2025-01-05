@@ -28,16 +28,16 @@ React Router 7 allows you to couple data fetching with route definitions, throug
 
 **1- Loaders:** These are functions you define in your route configuration to fetch data before rendering a route:
 
-```
+```javascript
 import {
   createBrowserRouter,
   RouterProvider,
   useLoaderData,
-} from 'react-router-dom';
+} from "react-router-dom";
 
 const fetchUserData = async () => {
-  const response = await fetch('/api/user');
-  if (!response.ok) throw new Error('Failed to fetch user data');
+  const response = await fetch("/api/user");
+  if (!response.ok) throw new Error("Failed to fetch user data");
   return response.json();
 };
 
@@ -52,7 +52,7 @@ const UserPage = () => {
 
 const router = createBrowserRouter([
   {
-    path: '/user',
+    path: "/user",
     element: <UserPage />,
     loader: fetchUserData,
   },
@@ -76,12 +76,12 @@ In this example:
 
 This ensures users see a friendly message if the data fetch fails.
 
-```
+```javascript
 const ErrorPage = () => <div>Oops! Something went wrong.</div>;
 
 const router = createBrowserRouter([
   {
-    path: '/user',
+    path: "/user",
     element: <UserPage />,
     loader: fetchUserData,
     errorElement: <ErrorPage />,
@@ -91,16 +91,19 @@ const router = createBrowserRouter([
 
 **2- Deferred Data:** React Router 7 allows you to load data in parallel using the defer function. This is particularly useful when you have multiple data fetching operations. For example, for a large dataset you would want to defer non-critical data loading.
 
-```
-import { defer, useLoaderData } from 'react-router-dom';
+```javascript
+import { defer, useLoaderData } from "react-router-dom";
 
-const fetchCriticalData = async () => fetch('/api/critical').then((res) => res.json());
-const fetchNonCriticalData = async () => fetch('/api/non-critical').then((res) => res.json());
+const fetchCriticalData = async () =>
+  fetch("/api/critical").then((res) => res.json());
+const fetchNonCriticalData = async () =>
+  fetch("/api/non-critical").then((res) => res.json());
 
-const loader = () => defer({
-  critical: fetchCriticalData(),
-  nonCritical: fetchNonCriticalData(),
-});
+const loader = () =>
+  defer({
+    critical: fetchCriticalData(),
+    nonCritical: fetchNonCriticalData(),
+  });
 
 const Page = () => {
   const data = useLoaderData();
@@ -116,7 +119,7 @@ const Page = () => {
 
 const router = createBrowserRouter([
   {
-    path: '/page',
+    path: "/page",
     element: <Page />,
     loader,
   },

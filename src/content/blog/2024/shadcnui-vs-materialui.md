@@ -64,7 +64,7 @@ ShadCN UI requires familiarity with Tailwind CSS (and honestly, is there anyone 
 
 As you see in this code The button is styled entirely with Tailwind CSS utility classes. You have control over every aspect of the design (e.g., colors, padding, border-radius). Unlike MaterialUI, there are no predefined variants or themes — you build and customize everything.
 
-```
+```javascript
 import React from "react";
 
 const ShadCNButton = () => {
@@ -79,14 +79,13 @@ const ShadCNButton = () => {
 };
 
 export default ShadCNButton;
-
 ```
 
 ### 2- Practical Demonstration of MaterialUI Button Component:
 
 Material UI’s Button component comes with multiple variants and predefined color options (like primary and secondary). Inline styles or the sx prop can be used for further customization.
 
-```
+```javascript
 import React from "react";
 import Button from "@mui/material/Button";
 
@@ -94,16 +93,16 @@ const MaterialUIButton = () => {
   return (
     <Button
       variant="contained" // Options: "text", "outlined", or "contained"
-      color="primary"     // Built-in colors: "primary", "secondary", etc.
+      color="primary" // Built-in colors: "primary", "secondary", etc.
       onClick={() => alert("Material UI Button Clicked!")}
       sx={{
         backgroundColor: "#1976d2", // Custom background color
         "&:hover": {
           backgroundColor: "#1565c0", // Hover state color
         },
-        padding: "10px 20px",       // Custom padding
-        borderRadius: "8px",        // Rounded corners
-        fontWeight: "bold",         // Bold text
+        padding: "10px 20px", // Custom padding
+        borderRadius: "8px", // Rounded corners
+        fontWeight: "bold", // Bold text
       }}
     >
       Material UI Button
@@ -140,4 +139,4 @@ If you’re already familiar with Tailwind CSS and want to build lightweight, hi
 
 For me, I’m glad I gave ShadCN UI a chance — it’s added another powerful tool to my developer’s toolkit!
 
-_This article was originally published in [Code Like A Girl](https://code.likeagirl.io/) a [Medium](https://medium.com/@SevdaSevinu/understanding-data-loading-in-react-router-7-829df70f23ab) publication_
+_This article was originally published in [Code Like A Girl](https://code.likeagirl.io/) a [Medium](https://medium.com/code-like-a-girl/shadcn-ui-vs-material-ui-for-react-694bad9b0be3) publication_
