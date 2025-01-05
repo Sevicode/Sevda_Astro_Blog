@@ -5,7 +5,7 @@ pubDate: 2025-01-01
 author: "Sevda Amini-Uhde"
 image: "/images/blog/data-loading-2.png"
 tags: ["web development", "beginners", "programming", "react router 7", "React"]
-canonical: "https://original-site.com/your-article" # Add this line
+canonical: "https://medium.com/@SevdaSevinu/understanding-data-loading-in-react-router-7-829df70f23ab"
 ---
 
 ![AI generated image for this article](/public/images/blog/data-loading-2.png)
@@ -136,3 +136,7 @@ const router = createBrowserRouter([
 React Router 7’s data loading features provide a clean, efficient way to manage data fetching in your React applications. By following these best practices and examples, you’ll be well on your way to building more responsive and user-friendly applications.
 
 Feel free to share your thoughts in the comments if I missed anything or if you have any questions!
+
+<div style="text-align: center;">••••••••••••••••••••••••</div>
+
+_This article was originally posted on [Medium](https://medium.com/@SevdaSevinu/understanding-data-loading-in-react-router-7-829df70f23ab)_
