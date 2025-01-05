@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets';
+import { getImagePath } from '../../utils/images';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  url: string;
+  image?: string;
+}
+
+const { title, description, pubDate, url, image } = Astro.props;
+const imagePath = getImagePath(image);
+---
+
+<article class="flex flex-col h-full bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+  <a href={url} class="h-full">
+    <div class="aspect-video">
+      <Image
+        src={imagePath}
+        alt={title}
+        width={400}
+        height={225}
+        class="object-cover w-full h-full"
+      />
+    </div>
+    <div class="p-4 space-y-2">
+      <h3 class="text-lg font-semibold text-gray-900 hover:text-primary transition-colors">
+        {title}
+      </h3>
+      <p class="text-sm text-gray-600 line-clamp-2">
+        {description}
+      </p>
+      <time class="text-xs text-gray-500 block" datetime={pubDate.toISOString()}>
+        {pubDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        })}
+      </time>
+    </div>
+  </a>
+</article>

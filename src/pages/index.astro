@@ -1,15 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import BlogCard from '../components/blog/BlogCard.astro';
+import LatestPostCard from '../components/blog/LatestPostCard.astro';
 import ProjectCard from '../components/projects/ProjectCard.astro';
 
-// Get latest 8 blog posts
+// Get latest 3 blog posts
 const posts = await getCollection('blog');
 const latestPosts = posts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 8);
-
+  .slice(0, 3);
 
 // Get latest 3 projects
 const projects = await getCollection('projects');
@@ -19,23 +18,20 @@ const latestProjects = projects
 ---
 
 <Layout title="Your Name - Developer & Writer">
-  <section class="space-y-8 ">
-    <div class="space-y-4 justify-center justify-items-center">
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-white">Hi there, Sevda here!👋</h1>
+  <section class="space-y-8">
+    <div class="space-y-4">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-white">Hi, I'm Your Name 👋</h1>
       <p class="text-xl text-gray-600 dark:text-gray-400">
-        A web developer crafting seamless experiences,
+        I'm a software developer and writer passionate about web development, technology, and sharing knowledge.
       </p>
-      <!-- <p>A writer sharing insights and stories about web development,</p>
-      <p>An artist expressing creativity through colors,</p>
-      <p>And a creator shaping ideas into reality.</p> -->
     </div>
 
-    <div class="flex gap-4 justify-center	">
+    <div class="flex gap-4">
       <a
-        href="https://www.linkedin.com/in/sevda-amini-phd-ab770743/"
+        href="/blog"
         class="inline-flex items-center px-4 py-2 border border-primary text-primary hover:bg-primary hover:text-white rounded-md transition-colors"
       >
-        Connect on LinkedIn
+        Read my blog
       </a>
       <a
         href="/projects"
@@ -54,14 +50,13 @@ const latestProjects = projects
       </a>
     </div>
     
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {latestPosts.map(post => (
-        <BlogCard
+        <LatestPostCard
           title={post.data.title}
           description={post.data.description}
           pubDate={post.data.pubDate}
           url={`/blog/${post.slug}`}
-          tags={post.data.tags}
           image={post.data.image}
         />
       ))}
