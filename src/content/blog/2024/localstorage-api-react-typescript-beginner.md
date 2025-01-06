@@ -4,7 +4,7 @@ description: "Learn How to Use the Native localStorage API in React TypeScript: 
 pubDate: 2024-11-27
 author: "Sevda Amini-Uhde"
 image: "/public/images/blog/localAPI.png"
-tags: ["React-TypeScript", "LocalStorage API", "Beginners guide"]
+tags: ["React-TypeScript", "LocalStorage API", "MaterialUI", "Beginners guide"]
 canonical: "https://javascript.plainenglish.io/4-ways-to-use-localstorage-in-react-typescript-part-1-4671460ac2b2"
 ---
 
