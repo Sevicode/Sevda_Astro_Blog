@@ -1,11 +1,11 @@
 ---
-title: "Understanding Data Loading in React Router 7"
+title: "Understanding Data Loading in React Router 7: A Beginner’s Guide(2025)"
 description: "A beginner’s guide to React Router 7 data loading patterns. Learn through examples and transform how you handle data in your React applications."
 pubDate: 2025-01-01
 author: "Sevda Amini-Uhde"
 image: "/images/blog/data-loading-2.png"
 tags: ["web development", "beginners", "programming", "react router 7", "React"]
-canonical: "https://medium.com/@SevdaSevinu/understanding-data-loading-in-react-router-7-829df70f23ab"
+canonical: "https://javascript.plainenglish.io/understanding-data-loading-in-react-router-7-829df70f23ab"
 ---
 
 ![AI generated image for this article](/public/images/blog/data-loading-2.png)
@@ -32,20 +32,31 @@ React Router 7 allows you to couple data fetching with route definitions, throug
 import {
   createBrowserRouter,
   RouterProvider,
-  useLoaderData,
-} from "react-router-dom";
+  useRouteError,
+} from "react-router";
 
-const fetchUserData = async () => {
+async function fetchUserData() {
   const response = await fetch("/api/user");
-  if (!response.ok) throw new Error("Failed to fetch user data");
+  if (!response.ok) {
+    throw new Error("Failed to fetch user data");
+  }
   return response.json();
-};
+}
 
-const UserPage = () => {
-  const data = useLoaderData();
+const UserPage = ({ data }) => {
   return (
     <div>
       <h1>Welcome, {data.name}!</h1>
+    </div>
+  );
+};
+
+const ErrorPage = () => {
+  const error = useRouteError();
+  return (
+    <div>
+      <h1>Oops! Something went wrong.</h1>
+      <p>{error.message}</p>
     </div>
   );
 };
@@ -55,6 +66,7 @@ const router = createBrowserRouter([
     path: "/user",
     element: <UserPage />,
     loader: fetchUserData,
+    errorElement: <ErrorPage />,
   },
 ]);
 
@@ -69,15 +81,22 @@ In this example:
 
 - The `fetchUserData` function fetches user data from an API.
 - The `loader` key in the route configuration ensures the data is fetched before rendering the `UserPage` component.
-
-* Once you’ve set up a `loader`, accessing the data in your component is straightforward using the `useLoaderData` hook. In our example the `useLoaderData` hook is used to access the loaded data within the `UserPage` component.
+- In React Router 7, loader data is directly passed as props to the route component. The UserPage component now receives the fetched data (data) as a prop.
 
 **3- Error Handling:** React Router 7 allows you to define error elements for routes, making it easy to handle failures.
 
 This ensures users see a friendly message if the data fetch fails.
 
 ```javascript
-const ErrorPage = () => <div>Oops! Something went wrong.</div>;
+const ErrorPage = () => {
+  const error = useRouteError();
+  return (
+    <div>
+      <h1>Oops! Something went wrong.</h1>
+      <p>{error.message}</p>
+    </div>
+  );
+};
 
 const router = createBrowserRouter([
   {
@@ -89,30 +108,39 @@ const router = createBrowserRouter([
 ]);
 ```
 
-**2- Deferred Data:** React Router 7 allows you to load data in parallel using the defer function. This is particularly useful when you have multiple data fetching operations. For example, for a large dataset you would want to defer non-critical data loading.
+The `ErrorPage` component uses `useRouteError` hook from React Router to access the error object thrown during data loading and displays a more informative error message by accessing `error.message` property.
+
+**2- Deferred Data:** In React Router 7 the `defer` function which allowed you to load data in parallel **is deprecated** instead now we can use the React `Suspense` component.
+
+_“[React Router](https://reactrouter.com/how-to/suspense) supports React Suspense by returning promises from loaders and actions.”_
+
+**what is `Suspense`?**
+
+Suspense is a React component which help us to “suspend” or delay the rendering of a part of UI until all the code or data are loaded.
+
+Simply, imagine you have a list of products, each with a title, image, and description, but not all of them load at the same time. The `Suspense` component steps in to show something (a fallback component) while your API is busy loading the data.
 
 ```javascript
-import { defer, useLoaderData } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router";
 
 const fetchCriticalData = async () =>
   fetch("/api/critical").then((res) => res.json());
+
 const fetchNonCriticalData = async () =>
   fetch("/api/non-critical").then((res) => res.json());
 
-const loader = () =>
-  defer({
-    critical: fetchCriticalData(),
-    nonCritical: fetchNonCriticalData(),
-  });
+const loader = async () => ({
+  critical: await fetchCriticalData(),
+  nonCritical: fetchNonCriticalData(),
+});
 
-const Page = () => {
-  const data = useLoaderData();
+const Page = ({ data }) => {
   return (
     <div>
       <h1>Critical Data: {data.critical}</h1>
-      <React.Suspense fallback={<div>Loading non-critical data...</div>}>
+      <Suspense fallback={<div>Loading non-critical data...</div>}>
         <div>Non-Critical Data: {data.nonCritical}</div>
-      </React.Suspense>
+      </Suspense>
     </div>
   );
 };
@@ -124,7 +152,19 @@ const router = createBrowserRouter([
     loader,
   },
 ]);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
+
+export default App;
 ```
+
+In the code above imagine you’re ordering food at a restaurant.
+
+- The `loader` is like the kitchen staff! They prepare your main course (critical data) quickly and start preparing a side dish (non-critical data) in the background. The loader function calls `fetchCriticalData` and waits for the result. It also calls `fetchNonCriticalData` but does not wait for the results immediately because we want the critical data to be display first and then load the non-critical data in the background.
+- The `Page` is your table. It displays the main course immediately. It displays the critical data immediately and while the non-critical data are fetched but it shows “Loading non-critical data…” message.
+- `Suspense` is like a placeholder card that says "Side dish coming soon!" while you enjoy your main course. Once the side dish is ready, the placeholder is replaced with the actual dish.
 
 ## Best Practices for Data Loading
 
